@@ -1,0 +1,14 @@
+### Prescriptions
+GET http://localhost:5000/api/prescriptions
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1NCwicm9sZSI6InBhdGllbnQiLCJpYXQiOjE3ODcxOTg4MTcsImV4cCI6MTc4NzIwMjQxN30.IsHrYgEcnfBLw9HEW6sy3O-0Q-BiugbLhnc8u0IhjXI
+
+### Reminders
+GET http://localhost:5000/api/reminders
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1NCwicm9sZSI6InBhdGllbnQiLCJpYXQiOjE3ODcxOTg4MTcsImV4cCI6MTc4NzIwMjQxN30.IsHrYgEcnfBLw9HEW6sy3O-0Q-BiugbLhnc8u0IhjXI
+
+### Guardians
+GET http://localhost:5000/api/guardians
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1NCwicm9sZSI6InBhdGllbnQiLCJpYXQiOjE3ODcxOTg4MTcsImV4cCI6MTc4NzIwMjQxN30.IsHrYgEcnfBLw9HEW6sy3O-0Q-BiugbLhnc8u0IhjXI
+### Users
+GET http://localhost:5000/api/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1NCwicm9sZSI6InBhdGllbnQiLCJpYXQiOjE3ODcxOTg4MTcsImV4cCI6MTc4NzIwMjQxN30.IsHrYgEcnfBLw9HEW6sy3O-0Q-BiugbLhnc8u0IhjXI

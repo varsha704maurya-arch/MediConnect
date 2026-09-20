@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f4f7f6;
+  --foreground: #18302d;
+  --ink-muted: #6b7d79;
+  --line: #dce8e4;
+  --brand: #167d72;
+  --brand-deep: #0d5b54;
+  --accent: #e9a84a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), sans-serif;
+}
+
+::selection {
+  background: #bde3dc;
+  color: var(--brand-deep);
+}
+
+button,
+a,
+input {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 3px solid #a8d8d0;
+  outline-offset: 3px;
+}
+
+.app-shell {
+  background: radial-gradient(circle at 85% 0%, #e0f2ed 0, transparent 28rem), var(--background);
+}
+
+.soft-grid {
+  background-image: linear-gradient(#dce8e4 1px, transparent 1px), linear-gradient(90deg, #dce8e4 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(to bottom, black, transparent 80%);
+}
+
+.rise-in {
+  animation: rise-in 500ms ease-out both;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

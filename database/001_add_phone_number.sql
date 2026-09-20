@@ -1,0 +1,2 @@
+ALTER TABLE Users
+    ADD COLUMN phone_number VARCHAR(32) NULL AFTER email;
