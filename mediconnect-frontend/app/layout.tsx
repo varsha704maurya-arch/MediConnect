@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Navbar from "./components/Navbar";
 import ActiveReminderBanner from "./components/ActiveReminderBanner";
+import PwaRegister from "./components/PwaRegister";
 import { AuthProvider } from "../lib/authContext";
 import "./globals.css";
 
@@ -110,6 +111,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="app-shell min-h-full text-[var(--foreground)] bg-[#f8faf9] flex flex-col">
         <AuthProvider>
+          <PwaRegister />
           <ActiveReminderBanner />
           <Navbar />
           <main className="flex-1">{children}</main>

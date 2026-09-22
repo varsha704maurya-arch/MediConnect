@@ -116,6 +116,7 @@ export async function sendDueReminderNotifications() {
                 r.escalated_to_guardian,
                 r.guardian_id,
                 r.patient_id,
+                (r.notified_date = CURDATE()) AS notified_today,
                 COALESCE(p.medicine_name, 'Prescribed Medicine') AS medicine_name, 
                 COALESCE(p.dosage, 'As directed') AS dosage, 
                 COALESCE(p.instructions, '') AS instructions,
@@ -136,7 +137,7 @@ export async function sendDueReminderNotifications() {
         `);
 
         for (const reminder of reminders) {
-            const isFirstNotification = !reminder.notification_sent || reminder.notified_date !== new Date().toISOString().slice(0, 10);
+            const isFirstNotification = !reminder.notification_sent || !reminder.notified_today;
             const timeFormatted = reminder.reminder_time ? String(reminder.reminder_time).slice(0, 5) : "";
 
             if (isFirstNotification) {

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <defs>
+    <linearGradient id="mediconnect-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#042f2e"/>
+    </linearGradient>
+  </defs>
+  <rect width="192" height="192" rx="40" fill="url(#mediconnect-grad)"/>
+  <circle cx="96" cy="96" r="64" fill="#14b8a6" opacity="0.2"/>
+  <!-- Medical Cross and Pulse -->
+  <path d="M96 48 L96 144 M48 96 L144 96" stroke="#ffffff" stroke-width="16" stroke-linecap="round"/>
+  <path d="M56 104 L80 104 L88 78 L104 122 L114 96 L136 96" fill="none" stroke="#5eead4" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
