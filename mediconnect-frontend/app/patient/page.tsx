@@ -25,7 +25,8 @@ import {
     CheckCircle2,
     Shield,
     FilePlus2,
-    ClipboardList
+    ClipboardList,
+    MapPin
 } from "lucide-react";
 
 type PatientProfile = {
@@ -543,6 +544,13 @@ export default function PatientDashboard() {
                                 <FilePlus2 className="h-4 w-4 text-[var(--brand)]" />
                                 Upload Report
                             </button>
+                            <a
+                                href="#nearby-care"
+                                className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-2.5 text-xs font-bold text-emerald-800 shadow-xs transition hover:bg-emerald-100 cursor-pointer"
+                            >
+                                <MapPin className="h-4 w-4 text-emerald-600" />
+                                Nearby Care (5 km)
+                            </a>
                         </div>
                     </div>
 
@@ -1155,6 +1163,11 @@ export default function PatientDashboard() {
                         </div>
                     </div>
                 )}
+
+                {/* 5 km Care Finder for Patients & Emergency */}
+                <div id="nearby-care" className="pt-4 border-t border-slate-200">
+                    <NearbyHealthcare />
+                </div>
             </div>
 
             {/* ================= MODALS ================= */}

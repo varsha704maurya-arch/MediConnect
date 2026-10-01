@@ -22,8 +22,11 @@ function SelectRoleContent() {
     const searchParams = useSearchParams();
     const { user, login, setSessionUser } = useAuth();
 
-    const [selectedRole, setSelectedRole] = useState<UserRole>("patient");
-    const [isGoogleOAuth, setIsGoogleOAuth] = useState(false);
+    const isGoogleOAuth = Boolean(searchParams.get("isGoogle"));
+    const [selectedRole, setSelectedRole] = useState<UserRole>(() => {
+        const roleParam = searchParams.get("role") as UserRole | null;
+        return roleParam && ["patient", "doctor", "guardian"].includes(roleParam) ? roleParam : "patient";
+    });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
 
@@ -35,16 +38,8 @@ function SelectRoleContent() {
     // Handle token from Google callback or query param
     useEffect(() => {
         const token = searchParams.get("token");
-        const roleParam = searchParams.get("role") as UserRole | null;
-        const isGoogle = searchParams.get("isGoogle");
-
-        if (isGoogle) setIsGoogleOAuth(true);
-
-        if (token) {
+        if (token && typeof window !== "undefined") {
             localStorage.setItem("token", token);
-            if (roleParam && ["patient", "doctor", "guardian"].includes(roleParam)) {
-                setSelectedRole(roleParam);
-            }
         }
     }, [searchParams]);
 

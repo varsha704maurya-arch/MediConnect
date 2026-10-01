@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "../../lib/authContext";
 import NotificationBell from "./NotificationBell";
-import { Activity, User, LogOut, Menu, X, Shield, Stethoscope, HeartHandshake } from "lucide-react";
+import { Activity, LogOut, Menu, X, Shield, Stethoscope, HeartHandshake } from "lucide-react";
 
 export default function Navbar() {
     const { user, role, logout } = useAuth();

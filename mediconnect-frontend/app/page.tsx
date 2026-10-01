@@ -3,16 +3,11 @@ import {
     Stethoscope,
     Pill,
     HeartHandshake,
-    Video,
-    Building2,
     Clock,
     MapPin,
     Shield,
     CheckCircle2,
-    ArrowRight,
-    FileText,
-    Activity,
-    Lock
+    ArrowRight
 } from "lucide-react";
 
 export default function Home() {

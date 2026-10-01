@@ -30,8 +30,22 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const router = useRouter();
-    const [user, setUser] = useState<AuthUser | null>(null);
-    const [token, setToken] = useState<string | null>(null);
+    const [user, setUser] = useState<AuthUser | null>(() => {
+        if (typeof window === "undefined") return null;
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            try {
+                return JSON.parse(storedUser);
+            } catch {
+                return null;
+            }
+        }
+        return null;
+    });
+    const [token, setToken] = useState<string | null>(() => {
+        if (typeof window === "undefined") return null;
+        return localStorage.getItem("token");
+    });
     const [isLoading, setIsLoading] = useState(true);
 
     const logout = useCallback(() => {
@@ -76,17 +90,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }, [logout]);
 
     useEffect(() => {
-        const storedToken = typeof window !== "undefined" ? localStorage.getItem("token") : null;
-        const storedUser = typeof window !== "undefined" ? localStorage.getItem("user") : null;
-        if (storedToken && storedUser) {
-            try {
-                const parsed = JSON.parse(storedUser);
-                setUser(parsed);
-                setToken(storedToken);
-            } catch {
-                // Ignore parse errors
-            }
-        }
         refreshUser();
     }, [refreshUser]);
 

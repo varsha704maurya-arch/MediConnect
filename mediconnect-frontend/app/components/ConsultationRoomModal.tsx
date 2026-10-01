@@ -12,13 +12,9 @@ import {
     Send,
     MessageSquare,
     User,
-    Shield,
     Stethoscope,
     Clock,
-    Sparkles,
-    Maximize2,
-    X,
-    FileText
+    X
 } from "lucide-react";
 
 type ChatMessage = {
@@ -52,7 +48,7 @@ export default function ConsultationRoomModal({
     appointmentDate,
     notes,
 }: ConsultationRoomModalProps) {
-    const { user, role } = useAuth();
+    const { user } = useAuth();
 
     // Call controls state
     const [isMuted, setIsMuted] = useState(false);
@@ -68,14 +64,14 @@ export default function ConsultationRoomModal({
 
     // Call timer
     useEffect(() => {
-        if (!isOpen) {
-            setCallSeconds(0);
-            return;
-        }
+        if (!isOpen) return;
         const timer = setInterval(() => {
             setCallSeconds((s) => s + 1);
         }, 1000);
-        return () => clearInterval(timer);
+        return () => {
+            clearInterval(timer);
+            setCallSeconds(0);
+        };
     }, [isOpen]);
 
     // Format timer
@@ -147,6 +143,7 @@ export default function ConsultationRoomModal({
                             </div>
                             <p className="text-xs text-slate-400 mt-0.5">
                                 Connected with {partnerName} · {specializationOrHistory || "Consultation in progress"}
+                                {appointmentDate ? ` · ${new Date(appointmentDate).toLocaleDateString([], { month: "short", day: "numeric" })} at ${new Date(appointmentDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}` : ""}
                             </p>
                         </div>
                     </div>
