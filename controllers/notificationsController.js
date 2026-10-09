@@ -61,6 +61,34 @@ export const createNotification = async (req, res) => {
     }
 };
 
+// 🛡️ Helper to ensure subscriptions table exists
+async function ensureNotificationSubscriptionsTable() {
+    try {
+        await db.query(`
+            CREATE TABLE IF NOT EXISTS notification_subscriptions (
+                subscription_id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NOT NULL,
+                endpoint TEXT NOT NULL,
+                p256dh VARCHAR(255) NOT NULL,
+                auth VARCHAR(255) NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                INDEX idx_user_subs (user_id)
+            )
+        `);
+    } catch {
+        // Table may already exist
+    }
+}
+
+// 🔑 Return VAPID Public Key for client push registration
+export const getVapidPublicKey = (req, res) => {
+    const key = process.env.VAPID_PUBLIC_KEY || "";
+    res.json({
+        vapidPublicKey: key,
+        key: key
+    });
+};
+
 // 📲 Save push subscription
 export const savePushSubscription = async (req, res) => {
     const { endpoint, keys } = req.body;
@@ -68,6 +96,7 @@ export const savePushSubscription = async (req, res) => {
         return res.status(400).json({ error: "A valid push subscription is required" });
     }
     try {
+        await ensureNotificationSubscriptionsTable();
         await db.query("DELETE FROM notification_subscriptions WHERE endpoint = ?", [endpoint]);
         await db.query(
             "INSERT INTO notification_subscriptions (user_id, endpoint, p256dh, auth) VALUES (?, ?, ?, ?)",

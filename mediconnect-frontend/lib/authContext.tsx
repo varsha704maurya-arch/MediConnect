@@ -30,22 +30,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const router = useRouter();
-    const [user, setUser] = useState<AuthUser | null>(() => {
-        if (typeof window === "undefined") return null;
-        const storedUser = localStorage.getItem("user");
-        if (storedUser) {
-            try {
-                return JSON.parse(storedUser);
-            } catch {
-                return null;
-            }
-        }
-        return null;
-    });
-    const [token, setToken] = useState<string | null>(() => {
-        if (typeof window === "undefined") return null;
-        return localStorage.getItem("token");
-    });
+    const [user, setUser] = useState<AuthUser | null>(null);
+    const [token, setToken] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
     const logout = useCallback(() => {
@@ -90,6 +76,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }, [logout]);
 
     useEffect(() => {
+        if (typeof window !== "undefined") {
+            const storedToken = localStorage.getItem("token");
+            const storedUser = localStorage.getItem("user");
+            if (storedToken && storedUser) {
+                try {
+                    setUser(JSON.parse(storedUser));
+                    setToken(storedToken);
+                } catch {
+                    // Ignore parse errors
+                }
+            }
+        }
         refreshUser();
     }, [refreshUser]);
 

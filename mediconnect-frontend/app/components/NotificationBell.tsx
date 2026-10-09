@@ -30,14 +30,17 @@ export default function NotificationBell() {
     const [notifications, setNotifications] = useState<NotificationItem[]>([]);
     const [isOpen, setIsOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [pushSupported] = useState(() => {
-        if (typeof window === "undefined") return false;
-        return "Notification" in window && "serviceWorker" in navigator && "PushManager" in window;
-    });
+    const [pushSupported, setPushSupported] = useState(false);
     const [pushSubscribed, setPushSubscribed] = useState(false);
     const [isSubscribingPush, setIsSubscribingPush] = useState(false);
     const [pushMessage, setPushMessage] = useState<string | null>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setPushSupported("Notification" in window && "serviceWorker" in navigator && "PushManager" in window);
+        }
+    }, []);
 
     useEffect(() => {
         if (!user) return;

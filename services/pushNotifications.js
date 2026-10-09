@@ -83,6 +83,28 @@ export async function getLinkedGuardians(patientId, explicitGuardianId = null) {
     }
 }
 
+let reminderColumnsChecked = false;
+async function ensureReminderColumns() {
+    if (reminderColumnsChecked) return;
+    try {
+        const [cols] = await db.query("SHOW COLUMNS FROM Medicine_Reminders LIKE 'last_notified_at'");
+        if (!cols.length) {
+            await db.query("ALTER TABLE Medicine_Reminders ADD COLUMN last_notified_at DATETIME NULL");
+        }
+        const [escCols] = await db.query("SHOW COLUMNS FROM Medicine_Reminders LIKE 'escalated_to_guardian'");
+        if (!escCols.length) {
+            await db.query("ALTER TABLE Medicine_Reminders ADD COLUMN escalated_to_guardian TINYINT(1) DEFAULT 0");
+        }
+        const [dateCols] = await db.query("SHOW COLUMNS FROM Medicine_Reminders LIKE 'notified_date'");
+        if (!dateCols.length) {
+            await db.query("ALTER TABLE Medicine_Reminders ADD COLUMN notified_date DATE NULL");
+        }
+        reminderColumnsChecked = true;
+    } catch (err) {
+        // Log once or continue if table doesn't exist yet
+    }
+}
+
 /**
  * Authoritative Medicine Reminder & 2-Minute Escalation Scheduler
  * 1. Resets taken status on daily rollover for recurring reminders.
@@ -93,6 +115,7 @@ export async function getLinkedGuardians(patientId, explicitGuardianId = null) {
  */
 export async function sendDueReminderNotifications() {
     try {
+        await ensureReminderColumns();
         // Daily rollover reset: if notified_date is before today, reset for the new day
         await db.query(`
             UPDATE Medicine_Reminders

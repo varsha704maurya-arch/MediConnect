@@ -32,6 +32,11 @@ export default function ActiveReminderBanner({ onDoseTaken }: { onDoseTaken?: ()
     const [guardianAlerts, setGuardianAlerts] = useState<GuardianReminder[]>([]);
     const [isUpdating, setIsUpdating] = useState<number | null>(null);
     const [feedback, setFeedback] = useState<string | null>(null);
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     const checkDueReminders = useCallback(async () => {
         if (!user) return;
@@ -79,7 +84,7 @@ export default function ActiveReminderBanner({ onDoseTaken }: { onDoseTaken?: ()
         }
     };
 
-    if (role !== "patient" && role !== "guardian") return null;
+    if (!isMounted || (role !== "patient" && role !== "guardian")) return null;
 
     if (feedback && dueReminders.length === 0) {
         return (

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "../../lib/authContext";
@@ -11,9 +11,17 @@ export default function Navbar() {
     const { user, role, logout } = useAuth();
     const pathname = usePathname();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    const currentUser = isMounted ? user : null;
+    const currentRole = isMounted ? role : null;
 
     const getRoleBadge = () => {
-        switch (role) {
+        switch (currentRole) {
             case "doctor":
                 return (
                     <span className="inline-flex items-center gap-1 rounded-md bg-teal-50 px-2 py-0.5 text-xs font-bold text-teal-700 border border-teal-200">
@@ -58,11 +66,11 @@ export default function Navbar() {
 
                     {/* Navigation links for logged in role */}
                     <nav className="hidden md:flex items-center gap-1">
-                        {role && (
+                        {currentRole && (
                             <Link
-                                href={`/${role}`}
+                                href={`/${currentRole}`}
                                 className={`rounded-lg px-3 py-2 text-xs font-bold transition ${
-                                    pathname === `/${role}`
+                                    pathname === `/${currentRole}`
                                         ? "bg-teal-50 text-[var(--brand-deep)]"
                                         : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                                 }`}
@@ -81,7 +89,7 @@ export default function Navbar() {
                             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                             Nearby Care (5 km)
                         </Link>
-                        {role === "patient" && (
+                        {currentRole === "patient" && (
                             <>
                                 <a
                                     href="/patient#appointments"
@@ -109,7 +117,7 @@ export default function Navbar() {
                                 </a>
                             </>
                         )}
-                        {role === "doctor" && (
+                        {currentRole === "doctor" && (
                             <>
                                 <a
                                     href="/doctor#schedule"
@@ -125,7 +133,7 @@ export default function Navbar() {
                                 </a>
                             </>
                         )}
-                        {role === "guardian" && (
+                        {currentRole === "guardian" && (
                             <>
                                 <a
                                     href="/guardian#patients"
@@ -146,7 +154,7 @@ export default function Navbar() {
 
                 {/* Right actions */}
                 <div className="flex items-center gap-3">
-                    {user ? (
+                    {currentUser ? (
                         <>
                             <Link
                                 href="/select-role"
@@ -160,10 +168,10 @@ export default function Navbar() {
                                 {getRoleBadge()}
                                 <div className="text-right">
                                     <span className="block text-xs font-bold text-slate-800 leading-tight">
-                                        {user.name}
+                                        {currentUser.name}
                                     </span>
                                     <span className="block text-[10px] text-slate-400 leading-none">
-                                        {user.email}
+                                        {currentUser.email}
                                     </span>
                                 </div>
                             </div>
@@ -196,7 +204,7 @@ export default function Navbar() {
 
 
                     {/* Mobile Hamburger */}
-                    {user && (
+                    {currentUser && (
                         <button
                             type="button"
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -209,14 +217,14 @@ export default function Navbar() {
             </div>
 
             {/* Mobile dropdown menu */}
-            {mobileMenuOpen && user && (
+            {mobileMenuOpen && currentUser && (
                 <div className="md:hidden border-t border-slate-200 bg-white px-4 py-3 space-y-2 animate-in slide-in-from-top-2">
                     <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                        <span className="text-xs font-bold text-slate-800">{user.name}</span>
+                        <span className="text-xs font-bold text-slate-800">{currentUser.name}</span>
                         {getRoleBadge()}
                     </div>
                     <Link
-                        href={`/${role}`}
+                        href={`/${currentRole}`}
                         onClick={() => setMobileMenuOpen(false)}
                         className="block rounded-lg px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50"
                     >
@@ -237,7 +245,7 @@ export default function Navbar() {
                         Switch Role / Workspace
                     </Link>
 
-                    {role === "patient" && (
+                    {currentRole === "patient" && (
                         <>
                             <a
                                 href="/patient#appointments"
@@ -269,7 +277,7 @@ export default function Navbar() {
                             </a>
                         </>
                     )}
-                    {role === "doctor" && (
+                    {currentRole === "doctor" && (
                         <>
                             <a
                                 href="/doctor#schedule"
@@ -287,7 +295,7 @@ export default function Navbar() {
                             </a>
                         </>
                     )}
-                    {role === "guardian" && (
+                    {currentRole === "guardian" && (
                         <>
                             <a
                                 href="/guardian#patients"
